@@ -15,7 +15,7 @@ function checksExistsUserAccount(request, response, next) {
     return user.username === username;
   });
   if(!user) {
-    return response.status(404).json({ error: 'Username not found' });
+    return response.status(404).json({ error: 'Username not found.' });
   };
   request.user = user;
   return next();
@@ -24,7 +24,7 @@ function checksExistsUserAccount(request, response, next) {
 function checksCreateTodosUserAvailability(request, response, next) {
   const { user } = request;
   if (user.todos.length >= 10 && user.pro == false) {
-    return response.status(201).json({ error: 'você não pode adicionar mais tarefas. Atualize seu plano.' });
+    return response.status(201).json({ error: 'You cannot add more tasks. Update your plan.' });
   }
   return next();
 }
@@ -50,7 +50,7 @@ function findUserById(request, response, next) {
     return user.id === id;
   });
   if(!user) {
-    return response.status(400).json({ error: 'User Not Exists!' });
+    return response.status(400).json({ error: 'User Not Exists.' });
   };
   request.user = user;
   return next();
