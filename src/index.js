@@ -10,19 +10,47 @@ app.use(cors());
 const users = [];
 
 function checksExistsUserAccount(request, response, next) {
-  // Complete aqui
+  const { username } = request.headers;
+  const user = users.find((user) => {
+    return user.username === username;
+  });
+  if(!user) {
+    return response.status(404).json({ error: 'Username not found' });
+  };
+  request.user = user;
+  return next();
 }
 
 function checksCreateTodosUserAvailability(request, response, next) {
-  // Complete aqui
+  const { user } = request;
+  if (user.todos.length >= 10 && user.pro == false) {
+    return response.status(201).json({ error: 'você não pode adicionar mais tarefas. Atualize seu plano.' });
+  }
+  return next();
 }
 
 function checksTodoExists(request, response, next) {
-  // Complete aqui
+  const { id } = request.params;
+  const { user } = request;
+  // const todo = user.todos.find(todo => todo.id === id);
+  // if(!todo) {
+  //   return response.status(404).json({ error: 'Not Found' });
+  // };
+  console.log(user)
+  // request.todo = todo;
+  return next();
 }
 
 function findUserById(request, response, next) {
-  // Complete aqui
+  const { id } = request.params;
+  const user = users.find((user) => {
+    return user.id === id;
+  });
+  if(!user) {
+    return response.status(400).json({ error: 'User Not Exists!' });
+  };
+  request.user = user;
+  return next();
 }
 
 app.post('/users', (request, response) => {
@@ -45,6 +73,10 @@ app.post('/users', (request, response) => {
   users.push(user);
 
   return response.status(201).json(user);
+});
+
+app.get('/users', (req, res) => {
+  return res.status(201).json(users);
 });
 
 app.get('/users/:id', findUserById, (request, response) => {
