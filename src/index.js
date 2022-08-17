@@ -78,10 +78,6 @@ app.post('/users', (request, response) => {
   return response.status(201).json(user);
 });
 
-app.get('/users', (req, res) => {
-  return res.status(201).json(users);
-});
-
 app.get('/users/:id', findUserById, (request, response) => {
   const { user } = request;
 
